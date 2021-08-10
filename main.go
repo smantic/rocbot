@@ -75,25 +75,21 @@ func listen(s *discordgo.Session, m *discordgo.MessageCreate) {
 		}
 
 		tokens := strings.Split(content, " ")
-		if len(tokens) < 3 {
+		if len(tokens) != 2 {
 			return
 		}
 
-		name := strings.Trim(tokens[0], "<@>!")
-		log.Printf("%s == %s\n", name, s.State.User.ID)
-		if name == s.State.User.ID {
+		//log.Printf("%s == shutup", tokens[0])
+		if tokens[0] == "shutup" {
+
 			if isBanned(m.Author.Username) {
 				sesh.WriteMsg(channel.ID, m.Author.Mention())
 				return
 			}
 
-			switch tokens[1] {
-			case "tell":
-				username := strings.Trim(tokens[2], "<@>!")
-				list[username] = time.Now()
-				sesh.WriteMsg(channel.ID, tokens[2])
-			case "DM":
-			}
+			username := strings.Trim(tokens[1], "<@>!")
+			sesh.WriteMsg(channel.ID, tokens[1])
+			list[username] = time.Now()
 		}
 	}
 }
